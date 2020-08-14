@@ -9,7 +9,7 @@ import './App.css';
 
 const App = ()=> {
 
-  const apiurl = " http://www.omdbapi.com/?apikey=41ed672f";
+  const apiurl = " https://www.omdbapi.com/?apikey=41ed672f";
 
   const [moviesearch,setMoviesearch] = useState('');
   const [moviequry,setMoviequery] = useState('batman');
@@ -25,7 +25,7 @@ const App = ()=> {
 
   const getMovies = async() => {
 
-    const response = await fetch(`http://www.omdbapi.com/?apikey=41ed672f&s=${moviequry}`);
+    const response = await fetch(`https://www.omdbapi.com/?apikey=41ed672f&s=${moviequry}`);
     const data =  await response.json();
     setMovies(data.Search);
     console.log(data);
@@ -61,7 +61,7 @@ const App = ()=> {
   }
  
   const openpopup = async(id) => {
-    const response = await fetch(`http://www.omdbapi.com/?apikey=41ed672f&i=${id}`);
+    const response = await fetch(`https://www.omdbapi.com/?apikey=41ed672f&i=${id}`);
     const data =  await response.json();
       console.log(data);
       setSelected(data);
