@@ -6,7 +6,6 @@ import Popup from './components/Popup';
 import Footer from './components/Footer.js';
 
 import './App.css';
-import axios from 'axios';
 
 const App = ()=> {
 
@@ -19,11 +18,21 @@ const App = ()=> {
 
   
  useEffect(() => {
-  axios(apiurl+"&s="+moviequry).then(({data}) => {
-    console.log(data);
-    setMovies(data.Search);
-  })
+  getMovies();
+  
   },[moviequry]);
+
+
+  const getMovies = async() => {
+
+    const response = await fetch(`http://www.omdbapi.com/?apikey=41ed672f&s=${moviequry}`);
+    const data =  await response.json();
+    setMovies(data.Search);
+    console.log(data);
+
+   
+
+  }
 
   const handleinput = (e)=>{
     e.preventDefault();
@@ -51,13 +60,12 @@ const App = ()=> {
     }
   }
  
-  const openpopup = (id) => {
-    axios(apiurl+ "&i="+ id).then(({data}) => {
+  const openpopup = async(id) => {
+    const response = await fetch(`http://www.omdbapi.com/?apikey=41ed672f&i=${id}`);
+    const data =  await response.json();
       console.log(data);
       setSelected(data);
-
-
-    })
+  
 
   }
 
