@@ -3,13 +3,14 @@ import Header from './components/Header';
 import Movies from './components/Movies';
 import 'font-awesome/css/font-awesome.min.css';
 import Popup from './components/Popup';
+import Footer from './components/Footer.js';
 
 import './App.css';
 import axios from 'axios';
 
 const App = ()=> {
 
-  const apiurl =  "http://www.omdbapi.com/?apikey=41ed672f";
+  const apiurl = " http://www.omdbapi.com/?apikey=41ed672f";
 
   const [moviesearch,setMoviesearch] = useState('');
   const [moviequry,setMoviequery] = useState('batman');
@@ -18,17 +19,11 @@ const App = ()=> {
 
   
  useEffect(() => {
-  getMovies();
-
-  },[moviequry]);
-
-  const getMovies = async() => {
-    const response = await fetch(apiurl+"&s="+moviequry)
-    const data =  await response.json();
-    console.log(data.Search);
+  axios(apiurl+"&s="+moviequry).then(({data}) => {
+    console.log(data);
     setMovies(data.Search);
-
-  }
+  })
+  },[moviequry]);
 
   const handleinput = (e)=>{
     e.preventDefault();
@@ -55,17 +50,14 @@ const App = ()=> {
       
     }
   }
-  
-
-  const openpopup = async(id) => {
-    const response = await fetch(apiurl+"&i="+id)
-    const data =  await response.json();
-
+ 
+  const openpopup = (id) => {
+    axios(apiurl+ "&i="+ id).then(({data}) => {
       console.log(data);
       setSelected(data);
 
 
-  
+    })
 
   }
 
@@ -82,6 +74,7 @@ const App = ()=> {
         <Header search={search} handleinput={handleinput} moviesearch={moviesearch} searchbyenter={searchbyenter}/>
         <Movies movies={movies} openpopup={openpopup}/>
         {(typeof selected.Title != 'undefined' )? <Popup selected={selected} closepopup={closepopup}/> : null}
+        <Footer/>
 
         </div>  
     </div>
