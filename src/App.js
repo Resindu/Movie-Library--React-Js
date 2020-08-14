@@ -1,26 +1,92 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,{useState,useEffect} from 'react';
+import Header from './components/Header';
+import Movies from './components/Movies';
+import 'font-awesome/css/font-awesome.min.css';
+import Popup from './components/Popup';
 
-function App() {
+import './App.css';
+import axios from 'axios';
+
+const App = ()=> {
+
+  const apiurl = " http://www.omdbapi.com/?apikey=41ed672f";
+
+  const [moviesearch,setMoviesearch] = useState('');
+  const [moviequry,setMoviequery] = useState('batman');
+  const [movies,setMovies] = useState([]);
+  const [selected,setSelected] = useState({});
+
+  
+ useEffect(() => {
+  axios(apiurl+"&s="+moviequry).then(({data}) => {
+    console.log(data);
+    setMovies(data.Search);
+
+  })
+
+
+  },[moviequry]);
+
+  const handleinput = (e)=>{
+    e.preventDefault();
+    setMoviesearch(e.target.value);
+    console.log(e.target.value);
+
+
+  }
+
+  const search = (e) => {
+    e.preventDefault();
+    setMoviequery(moviesearch);
+    console.log('searched movie is ' +moviesearch);
+    setMoviesearch('');
+    axios(apiurl+"&s="+moviequry).then(({data}) => {
+      console.log(data);
+      setMovies(data.Search);
+
+    })
+
+  }
+
+  const searchbyenter = (e) => {
+    if (e.key  === 'Enter'){
+      setMoviequery(moviesearch);
+      console.log('searched movie is ' +moviesearch);
+      setMoviesearch('');
+      axios(apiurl+"&s="+moviesearch).then(({data}) => {
+        setMovies(data.Search);
+  
+      })  
+    }
+  }
+ 
+  const openpopup = (id) => {
+    axios(apiurl+ "&i="+ id).then(({data}) => {
+      console.log(data);
+      setSelected(data);
+
+
+    })
+
+  }
+
+  const closepopup = () => {
+    setSelected({});
+    
+  }
+  
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="outerContainer">
+        <div className="container">
+        <Header search={search} handleinput={handleinput} moviesearch={moviesearch} searchbyenter={searchbyenter}/>
+        <Movies movies={movies} openpopup={openpopup}/>
+        {(typeof selected.Title != 'undefined' )? <Popup selected={selected} closepopup={closepopup}/> : null}
+
+        </div>  
     </div>
-  );
+  )
 }
 
 export default App;
