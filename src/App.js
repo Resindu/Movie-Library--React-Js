@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const App = ()=> {
 
-  const apiurl = " http://www.omdbapi.com/?apikey=41ed672f";
+  const apiurl =  "http://www.omdbapi.com/?apikey=41ed672f";
 
   const [moviesearch,setMoviesearch] = useState('');
   const [moviequry,setMoviequery] = useState('batman');
@@ -18,14 +18,17 @@ const App = ()=> {
 
   
  useEffect(() => {
-  axios(apiurl+"&s="+moviequry).then(({data}) => {
-    console.log(data);
-    setMovies(data.Search);
-
-  })
-
+  getMovies();
 
   },[moviequry]);
+
+  const getMovies = async() => {
+    const response = await fetch(apiurl+"&s="+moviequry)
+    const data =  await response.json();
+    console.log(data.Search);
+    setMovies(data.Search);
+
+  }
 
   const handleinput = (e)=>{
     e.preventDefault();
@@ -40,11 +43,7 @@ const App = ()=> {
     setMoviequery(moviesearch);
     console.log('searched movie is ' +moviesearch);
     setMoviesearch('');
-    axios(apiurl+"&s="+moviequry).then(({data}) => {
-      console.log(data);
-      setMovies(data.Search);
-
-    })
+    
 
   }
 
@@ -53,20 +52,20 @@ const App = ()=> {
       setMoviequery(moviesearch);
       console.log('searched movie is ' +moviesearch);
       setMoviesearch('');
-      axios(apiurl+"&s="+moviesearch).then(({data}) => {
-        setMovies(data.Search);
-  
-      })  
+      
     }
   }
- 
-  const openpopup = (id) => {
-    axios(apiurl+ "&i="+ id).then(({data}) => {
+  
+
+  const openpopup = async(id) => {
+    const response = await fetch(apiurl+"&i="+id)
+    const data =  await response.json();
+
       console.log(data);
       setSelected(data);
 
 
-    })
+  
 
   }
 
