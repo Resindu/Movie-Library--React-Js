@@ -1,5 +1,5 @@
 You can find this projevt live using the following link : 
-                              https://blissful-dijkstra-1b403d.netlify.app/
+                             https://movie-library-by-resindu.netlify.app/
                               
                               
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------                             
